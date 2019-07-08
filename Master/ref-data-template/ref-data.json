@@ -1,0 +1,45 @@
+{
+  "referenceData": {
+    "type": "object",
+    "required": [
+      "code"
+    ],
+    "properties": {
+      "code": {
+        "type": "string",
+        "description": "code for the reference data"
+      },
+      "shortDescription": {
+        "type": "string",
+        "description": "shortDescription of the reference data"
+      },
+      "longDescription": {
+        "type": "string",
+        "description": "longDescription of the reference data"
+      },
+      "extendedProperties": {
+        "type": "array",
+        "description": "list of optional values associated with this reference data",
+        "items": {
+          "$ref": "#/definitions/property"
+        }
+      }
+    }
+  },
+  "property": {
+    "type": "object",
+    "properties": {
+      "key": {
+        "type": "string",
+        "description": "extended property key"
+      },
+      "value": {
+        "type": "string",
+        "description": "extended property value"
+      }
+    }
+  },
+  "$ref": {
+    "$ref": "#/definitions/referenceData"
+  }
+}

@@ -1,0 +1,824 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.8",
+    "title": "Transfer Providers",
+    "termsOfService": "governance-3"
+  },
+  "host": "adviser.royallondon.com",
+  "basePath": "/secure/api",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/v1/transferProviders": {
+      "get": {
+        "summary": "Retrieve a list of transfer providers",
+        "operationId": "TransferProviders_Query",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "referenceType",
+            "in": "query",
+            "description": "Quote/Proposal/Policy to retrieve the provider details",
+            "type": "string"
+          },
+          {
+            "name": "referenceId",
+            "in": "query",
+            "description": "Quote/Proposal/Policy Id to retrieve provider details.",
+            "type": "string"
+          },
+          {
+            "name": "incrementId",
+            "in": "query",
+            "description": "incrementID of the referenceType",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Keyword search to search on ProviderName & schemeName fields of TransferProvider records"
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Please refer to the sharepoint link\nhttp://rliprojects-portal/programme/scottishlife/ThinkBeyond/APIFactory/Project%20Documents/2.%20Solution%20Design/Integration%20Layer%20and%20APIs%20Technical%20Note_1.1.docx\non usage of Expand, Sorting and paging approach \n(by default if nothing is specified in expand response will return id,href and providerName)\n"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "description": "Please refer to the sharepoint link\nhttp://rliprojects-portal/programme/scottishlife/ThinkBeyond/APIFactory/Project%20Documents/2.%20Solution%20Design/Integration%20Layer%20and%20APIs%20Technical%20Note_1.1.docx\non usage of Expand, Sorting and paging approach\n"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "number",
+            "description": "Please refer to the sharepoint link\nhttp://rliprojects-portal/programme/scottishlife/ThinkBeyond/APIFactory/Project%20Documents/2.%20Solution%20Design/Integration%20Layer%20and%20APIs%20Technical%20Note_1.1.docx\non usage of Expand, Sorting and paging approach\n"
+          },
+          {
+            "name": "sessionId",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Please refer to the sharepoint link\nhttp://rliprojects-portal/programme/scottishlife/ThinkBeyond/APIFactory/Project%20Documents/2.%20Solution%20Design/Integration%20Layer%20and%20APIs%20Technical%20Note_1.1.docx\non usage of Expand, Sorting and paging approach\n"
+          },
+          {
+            "name": "pageReset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Please refer to the sharepoint link\nhttp://rliprojects-portal/programme/scottishlife/ThinkBeyond/APIFactory/Project%20Documents/2.%20Solution%20Design/Integration%20Layer%20and%20APIs%20Technical%20Note_1.1.docx\non usage of Expand, Sorting and paging approach\n"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/listTransferProvidersResponse"
+            }
+          },
+          "400": {
+            "description": "The request was invalid or cannot be otherwise served.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication credentials were missing or incorrect.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "500": {
+            "description": "A server error was encountered during a downstream call by the API",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "create a new transfer provider",
+        "operationId": "TransferProviders_Post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/createTransferProviderRequest"
+            }
+          },
+          {
+            "name": "caseId",
+            "in": "header",
+            "type": "string",
+            "description": "Optional case ID if request is being passed via CRM - if received in the request, it will be passed back in the response to allow correlation of case ID and applicant ID in BusinessWorks."
+          },
+          {
+            "name": "processcorrelationId",
+            "in": "header",
+            "type": "string",
+            "description": "if present, use it to send it back to CRM while updating the case"
+          },
+          {
+            "name": "sourceworkitemtype",
+            "in": "header",
+            "type": "string",
+            "description": "if present, use it to send it back to CRM while updating the case"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/commonResponse"
+            }
+          },
+          "400": {
+            "description": "The request was invalid or cannot be otherwise served.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication credentials were missing or incorrect.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "500": {
+            "description": "A server error was encountered during a downstream call by the API",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/v1/transferProviders/{providerId}": {
+      "get": {
+        "summary": "Retrieve details about a transfer provider",
+        "operationId": "TransferProviders_Get",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "referenceType",
+            "in": "header",
+            "description": "Quote/Proposal/Policy to retrieve the provider details",
+            "type": "string"
+          },
+          {
+            "name": "referenceId",
+            "in": "header",
+            "description": "Quote/Proposal/Policy Id to retrieve provider details.",
+            "type": "string"
+          },
+          {
+            "name": "incrementId",
+            "in": "header",
+            "required": false,
+            "type": "string",
+            "description": "Increment Id"
+          },
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Transfer Provider Id\n"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/transferProviderDetails"
+            }
+          },
+          "400": {
+            "description": "The request was invalid or cannot be otherwise served.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication credentials were missing or incorrect.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "404": {
+            "description": "The providerID Not found.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "500": {
+            "description": "A server error was encountered during a downstream call by the API",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "update a  transfer provider",
+        "operationId": "TransferProviders_Put",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Transfer Provider Id\n"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/updateTransferProviderRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "The request was invalid or cannot be otherwise served.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication credentials were missing or incorrect.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "500": {
+            "description": "A server error was encountered during a downstream call by the API",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "partial update of a  transfer provider to either update provider details or provider association to a quote/proposal/policy",
+        "operationId": "TransferProviders_Patch",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Transfer Provider Id\n"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/updateTransferProviderRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "The request was invalid or cannot be otherwise served.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "401": {
+            "description": "Authentication credentials were missing or incorrect.",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          },
+          "500": {
+            "description": "A server error was encountered during a downstream call by the API",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "listTransferProvidersResponse": {
+      "properties": {
+        "_metadata": {
+          "$ref": "#/definitions/metadata"
+        },
+        "_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/transferProvidersResponse"
+          }
+        }
+      }
+    },
+    "transferProvidersResponse": {
+      "required": [
+        "id",
+        "href",
+        "providerName"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id of the transfer provider."
+        },
+        "href": {
+          "type": "string"
+        },
+        "providerName": {
+          "type": "string",
+          "description": "Name of the transfer provider."
+        },
+        "providerScheme": {
+          "type": "string",
+          "description": "Name of the transfer providers scheme."
+        },
+        "bankAccount": {
+          "$ref": "#/definitions/bankAccountResponse"
+        },
+        "contactPhoneNumber": {
+          "type": "string",
+          "description": "Phone number for the provider."
+        },
+        "contactEmailAddress": {
+          "type": "string",
+          "description": "Email address for the provider."
+        },
+        "address": {
+          "$ref": "#/definitions/address"
+        },
+        "origoEnabledFlag": {
+          "type": "boolean",
+          "description": "Is this provider registered with Origo."
+        },
+        "origoReferenceNumber": {
+          "type": "string",
+          "description": "The reference number for this provider on the Origo system."
+        },
+        "origoProcessType": {
+          "type": "string",
+          "description": "Which Origo processes are allowed."
+        },
+        "trustLevelType": {
+          "type": "string",
+          "description": "Trust level for this provider"
+        },
+        "pensionSchemeTaxReference": {
+          "type": "string",
+          "description": "PSTR number"
+        },
+        "pensionSchemeReference": {
+          "type": "string",
+          "description": "Reference number"
+        },
+        "providerOffset": {
+          "type": "integer",
+          "description": "Provider offset"
+        }
+      }
+    },
+    "address": {
+      "type": "object",
+      "required": [
+        "addressType",
+        "addressLine1",
+        "cityOrTown",
+        "postcode",
+        "countryType"
+      ],
+      "properties": {
+        "addressType": {
+          "type": "string",
+          "description": "the type of the address\n* primaryAddress\n"
+        },
+        "addressLine1": {
+          "type": "string",
+          "description": "address line1"
+        },
+        "addressLine2": {
+          "type": "string",
+          "description": "address line2"
+        },
+        "addressLine3": {
+          "type": "string",
+          "description": "address line3"
+        },
+        "cityOrTown": {
+          "type": "string",
+          "description": "City or town"
+        },
+        "postcode": {
+          "type": "string",
+          "description": "postcode"
+        },
+        "countryType": {
+          "type": "string",
+          "description": "country"
+        }
+      }
+    },
+    "transferProviderDetails": {
+      "required": [
+        "id",
+        "href",
+        "providerName"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id of the transfer provider."
+        },
+        "href": {
+          "type": "string"
+        },
+        "providerName": {
+          "type": "string",
+          "description": "Name of the transfer provider."
+        },
+        "providerScheme": {
+          "type": "string",
+          "description": "Name of the transfer providers scheme."
+        },
+        "bankAccount": {
+          "$ref": "#/definitions/bankAccountResponse"
+        },
+        "contactPhoneNumber": {
+          "type": "string",
+          "description": "Phone number for the provider."
+        },
+        "contactEmailAddress": {
+          "type": "string",
+          "description": "Email address for the provider."
+        },
+        "address": {
+          "$ref": "#/definitions/address"
+        },
+        "origoEnabledFlag": {
+          "type": "boolean",
+          "description": "Is this provider registered with Origo."
+        },
+        "origoReferenceNumber": {
+          "type": "string",
+          "description": "The reference number for this provider on the Origo system.          "
+        },
+        "origoProcessType": {
+          "type": "string",
+          "description": "Which Origo processes are allowed."
+        },
+        "trustLevelType": {
+          "type": "string",
+          "description": "Trust level for this provider"
+        },
+        "pensionSchemeTaxReference": {
+          "type": "string",
+          "description": "PSTR number"
+        },
+        "pensionSchemeReference": {
+          "type": "string",
+          "description": "Reference number"
+        },
+        "providerOffset": {
+          "type": "integer",
+          "description": "Provider offset"
+        }
+      }
+    },
+    "errorResponse": {
+      "type": "object",
+      "required": [
+        "errorId",
+        "errorMsg",
+        "errorCode",
+        "errorType",
+        "contextInfo"
+      ],
+      "properties": {
+        "errorId": {
+          "type": "string",
+          "description": "Error ID - Unique Idnetifier for each transaction.",
+          "example": 123456789
+        },
+        "errorMsg": {
+          "type": "string",
+          "description": "Error Message",
+          "example": "error"
+        },
+        "errorCode": {
+          "type": "string",
+          "description": "Error COde",
+          "example": "TIB-NO-SUCH-TRANSFERPROVIDER-xx1"
+        },
+        "errorType": {
+          "type": "string",
+          "description": "Type of error (Technical | Business)",
+          "example": "Technical"
+        },
+        "contextInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/contextInfo"
+          }
+        }
+      }
+    },
+    "contextInfo": {
+      "type": "object",
+      "required": [
+        "name",
+        "value"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "name of the context attribute.",
+          "example": "filename"
+        },
+        "value": {
+          "type": "string",
+          "description": "value of context attribute.",
+          "example": "c:\\files\\file1.txt"
+        }
+      }
+    },
+    "metadata": {
+      "properties": {
+        "itemsCount": {
+          "type": "number",
+          "example": 102,
+          "description": "Indicates the total number of items within the resource collection."
+        },
+        "retrievedAt": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2017-10-10T01:20:30",
+          "description": "A date-time object indicating when the contents of the list were\nretrieved from the system of record. For a paged list this may be some\ntime before the current page of information was requested. Clients may\nuse this field to decide if they believe a refresh is necessary\n"
+        },
+        "sessionId": {
+          "type": "string",
+          "example": "P1234567890",
+          "description": "The unique identifier of the paging session. Clients must pass this\ncontactValue when requesting pages of a cached list\n"
+        },
+        "pageNumber": {
+          "type": "number",
+          "example": 2,
+          "description": "The current page number within the resource collection. The initial\npage is page 0\n"
+        },
+        "pageSize": {
+          "type": "number",
+          "example": 50,
+          "description": "The size of each page that may be requested. This is specified by the\nclient application when a paged list is created\n"
+        },
+        "pageMax": {
+          "type": "number",
+          "example": 2,
+          "description": "The maximum page number that may be requested."
+        }
+      }
+    },
+    "commonResponse": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        }
+      }
+    },
+    "createTransferProviderRequest": {
+      "type": "object",
+      "required": [
+        "providerName"
+      ],
+      "properties": {
+        "references": {
+          "$ref": "#/definitions/references"
+        },
+        "providerName": {
+          "type": "string",
+          "description": "Name of the transfer provider."
+        },
+        "providerScheme": {
+          "type": "string",
+          "description": "Name of the transfer providers scheme."
+        },
+        "contactPhoneNumber": {
+          "type": "string",
+          "description": "Phone number for the provider."
+        },
+        "contactEmailAddress": {
+          "type": "string",
+          "description": "Email address for the provider."
+        },
+        "bankAccount": {
+          "$ref": "#/definitions/bankAccount"
+        },
+        "address": {
+          "$ref": "#/definitions/address"
+        },
+        "origoEnabledFlag": {
+          "type": "boolean",
+          "description": "Is this provider registered with Origo."
+        },
+        "origoReferenceNumber": {
+          "type": "string",
+          "description": "The reference number for this provider on the Origo system.          "
+        },
+        "origoProcessType": {
+          "type": "string",
+          "description": "Which Origo processes are allowed."
+        },
+        "trustLevelType": {
+          "type": "string",
+          "description": "Trust level for this provider"
+        },
+        "pensionSchemeTaxReference": {
+          "type": "string",
+          "description": "PSTR number"
+        },
+        "pensionSchemeReference": {
+          "type": "string",
+          "description": "Reference number"
+        },
+        "providerOffset": {
+          "type": "integer",
+          "description": "Provider offset"
+        }
+      }
+    },
+    "updateTransferProviderRequest": {
+      "type": "object",
+      "properties": {
+        "references": {
+          "$ref": "#/definitions/references"
+        },
+        "providerName": {
+          "type": "string",
+          "description": "Name of the transfer provider."
+        },
+        "providerScheme": {
+          "type": "string",
+          "description": "Name of the transfer providers scheme."
+        },
+        "contactPhoneNumber": {
+          "type": "string",
+          "description": "Phone number for the provider."
+        },
+        "contactEmailAddress": {
+          "type": "string",
+          "description": "Email address for the provider."
+        },
+        "bankAccount": {
+          "$ref": "#/definitions/bankAccount"
+        },
+        "address": {
+          "$ref": "#/definitions/address"
+        },
+        "origoEnabledFlag": {
+          "type": "boolean",
+          "description": "Is this provider registered with Origo."
+        },
+        "origoReferenceNumber": {
+          "type": "string",
+          "description": "The reference number for this provider on the Origo system.          "
+        },
+        "origoProcessType": {
+          "type": "string",
+          "description": "Which Origo processes are allowed."
+        },
+        "trustLevelType": {
+          "type": "string",
+          "description": "Trust level for this provider"
+        },
+        "pensionSchemeTaxReference": {
+          "type": "string",
+          "description": "PSTR number"
+        },
+        "pensionSchemeReference": {
+          "type": "string",
+          "description": "Reference number"
+        },
+        "providerOffset": {
+          "type": "integer",
+          "description": "Provider offset          "
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "required": [
+        "referenceType",
+        "referenceId"
+      ],
+      "properties": {
+        "referenceType": {
+          "type": "string"
+        },
+        "referenceId": {
+          "type": "string"
+        },
+        "incrementId": {
+          "type": "string"
+        }
+      }
+    },
+    "bankAccount": {
+      "type": "object",
+      "properties": {
+        "accountNumber": {
+          "type": "string",
+          "description": "Bank account for the provider."
+        },
+        "accountName": {
+          "type": "string",
+          "description": "Bank account name for the provider."
+        },
+        "sortCode": {
+          "type": "string",
+          "description": "Sort code for the provider."
+        }
+      }
+    },
+    "bankAccountResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id of the bank account."
+        },
+        "accountNumber": {
+          "type": "string",
+          "description": "Bank account for the provider."
+        },
+        "accountName": {
+          "type": "string",
+          "description": "Bank account name for the provider."
+        },
+        "sortCode": {
+          "type": "string",
+          "description": "Sort code for the provider."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+    "extends": ["tslint:recommended", "tslint-sonarts"],
+    "rules": {              
+        "array-type": [true, "array"],
+        "eofline": false,
+        "no-unused-variable": true,
+        "member-ordering": [
+            true,
+            {
+                "order": [
+                    "instance-field",
+                    "static-field",
+                    "constructor",
+                    "public-instance-method",
+                    "protected-instance-method",
+                    "private-instance-method"
+                ]
+            }
+        ],
+        "ordered-imports": true,   
+        "quotemark": [true, "double", "avoid-escape"]         
+    }
+}
