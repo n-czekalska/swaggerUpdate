@@ -64,10 +64,11 @@ function processSwagger(swaggerData: any, refData: any): any {
   copySwaggerData.definitions.referenceData = refData.referenceData;
   copySwaggerData.definitions.property = refData.property;
   const modelsToAdd = createListOfObjectsToIterate(topLevelGetModels, allGetModels);
-  const newData = addNewGetModels(copySwaggerData, refData, modelsToAdd);
+  let newData = addNewGetModels(copySwaggerData, refData, modelsToAdd);
   const modelsToUpdate = createListOfObjectsToIterate(topLevelGetModels, listOfCopiedModels, postfix);
   upadePathsToNewModels(newData, modelsToUpdate);
   updatePathsInResponses(newData, allGetOps, listOfCopiedModels);
+  newData = findAndRemoveUnusedDefinitions(newData);
   return newData;
 }
 
@@ -151,10 +152,10 @@ function mapAndSaveHistoryOfChanges(updatedObject: string, data: any, key: strin
     return data;
 }
 
-function createHistoryReport(updatedObject: string, data: any, key: string, refData): void {
+function createHistoryReport(updatedObject: string, data: any, key: string, newValue: string): void {
   const changes = new Changes(updatedObject + ": " + key , new Change());
   changes.entry.oldValue = deepCopy(data);
-  changes.entry.newValue = refData;
+  changes.entry.newValue = newValue;
   changesMade.push(changes);
 }
 
@@ -222,6 +223,45 @@ function updatePath(doc: any, operationPath: string, response: string, reference
     doc.paths[operationPath].get.responses[response].schema.$ref += postfix;
   }
  }
+
+function findAndRemoveUnusedDefinitions(doc: any) {
+    let countOfDeletedItems: number = 0;
+    let document = doc;
+    do {
+      countOfDeletedItems = 0;
+      let listOfReferences: string[] = [];
+      listOfReferences = findAllReferences(document, listOfReferences);
+      const returnedValues = removeUnusedDefinitions(document, listOfReferences, countOfDeletedItems);
+      document = returnedValues[0];
+      countOfDeletedItems = returnedValues[1];
+    } while (countOfDeletedItems > 0);
+
+    return document;
+}
+
+function findAllReferences(doc: any, listOfReferences: string[]): string[] {
+  for (const key in doc) {
+    if (!!doc[key] && typeof(doc[key]) === "object") {
+        findAllReferences(doc[key], listOfReferences);
+    } else {
+      if (key === "$ref" && listOfReferences.indexOf(getModelName(doc[key])) === -1) {
+        listOfReferences.push(getModelName(doc[key]));
+       }
+    }
+  }
+  return listOfReferences;
+}
+
+function removeUnusedDefinitions(doc: any, references: string[], count: number): any {
+  Object.keys(doc.definitions).forEach((key) => {
+    if (references.indexOf(key) === -1) {
+      createHistoryReport(key, doc.definitions[key], null, "deleted");
+      delete doc.definitions[key];
+      count++;
+    }
+  });
+  return [doc, count];
+}
 
 export const deepCopy = <T>(target: T): T => {
   if (target === null) {
